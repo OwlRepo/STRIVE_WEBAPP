@@ -27,11 +27,11 @@ import axios from "axios";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserDataContext from "../../Context/UserDataContext";
 export default function DataTable() {
+  const [activity, setActivity] = useState("Activity 1");
   const [activityList, setActivityList] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const userDataContext = useContext(UserDataContext);
-  async function getActivityScores() {
+  async function getActivityScores(props) {
     setIsDataLoading(!isDataLoading);
     if (userDataContext.data.type == 0) {
       var activityInfo = axios
@@ -49,24 +49,23 @@ export default function DataTable() {
         });
     } else {
       setIsDataLoading(false);
-      // var activityInfo = axios
-      //   .get(
-      //     "https://opdbs.vercel.app/api/activity/student/" +
-      //       userDataContext.data.id
-      //   )
-      //   .then((response) => {
-      //     return setActivityList((prevData) => {
-      //       return prevData.concat(response.data);
-      //     });
-      //   })
-      //   .then((res) => {
-      //     setIsDataLoading(false);
-      //   });
+      var activityInfo = axios
+        .get(
+          `https://opdbs.vercel.app/api/activity/studentsAct${props.actNumber}`
+        )
+        .then((response) => {
+          return setActivityList(response.data);
+        })
+        .then((res) => {
+          setIsDataLoading(false);
+        });
     }
   }
+
   useEffect(() => {
-    getActivityScores();
+    getActivityScores({ actNumber: "1" });
   }, []);
+
   return (
     <Flex
       flex={9}
@@ -81,15 +80,24 @@ export default function DataTable() {
     >
       {userDataContext.data.type == 0 ? null : (
         <Flex flexDirection="row" alignItems="center">
-          <Text>Select Activity: </Text>
+          <Text marginRight="2.5">Select Activity: </Text>
           <Menu>
             <MenuButton as={Button} rightIcon={<AiFillCaretDown />}>
-              Activity1
+              {activity}
             </MenuButton>
-            <MenuList>
-              <MenuItem>Activity1</MenuItem>
-              <MenuItem>Activity2</MenuItem>
-              <MenuItem>Activity3</MenuItem>
+            <MenuList
+              onClick={(value) => {
+                setActivity(value.target.value);
+                const splittedString = value.target.value.split("");
+                console.log(splittedString[splittedString.length - 1]);
+                getActivityScores({
+                  actNumber: splittedString[splittedString.length - 1],
+                });
+              }}
+            >
+              <MenuItem value="Activity 1">Activity 1</MenuItem>
+              <MenuItem value="Activity 2">Activity 2</MenuItem>
+              <MenuItem value="Activity 3">Activity 3</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
@@ -118,13 +126,26 @@ export default function DataTable() {
           )}
           <Tbody alignItems="center" justifyContent="center">
             {activityList.map((val, index) => {
-              return (
-                <Tr key={index}>
-                  <Td>{index + 1}</Td>
-                  <Td>{val.id.title}</Td>
-                  <Td isNumeric>{val.id.score}</Td>
-                </Tr>
-              );
+              if (userDataContext.data.type == 0) {
+                return (
+                  <Tr key={index}>
+                    <Td>{index + 1}</Td>
+                    <Td>{val.id.title}</Td>
+                    <Td isNumeric>{val.id.score}</Td>
+                  </Tr>
+                );
+              } else {
+                return (
+                  <Tr key={index}>
+                    <Td>{val.id.id}</Td>
+                    <Td>
+                      {val.id.lastName}, {val.id.firstName}{" "}
+                      {val.id.middleInitial}
+                    </Td>
+                    <Td isNumeric>{val.id.score}</Td>
+                  </Tr>
+                );
+              }
             })}
           </Tbody>
         </Table>
