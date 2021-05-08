@@ -41,13 +41,24 @@ export default function DataTable() {
         <Spinner />
       ) : (
         <Table variant="striped" size="lg" colorScheme="teal">
-          <Thead>
-            <Tr>
-              <Th>ACTIVITY</Th>
-              <Th>NAME</Th>
-              <Th isNumeric>SCORE</Th>
-            </Tr>
-          </Thead>
+          {userDataContext.data.type == 0 ? (
+            <Thead>
+              <Tr>
+                <Th>ACTIVITY</Th>
+                <Th>NAME</Th>
+                <Th isNumeric>SCORE</Th>
+              </Tr>
+            </Thead>
+          ) : (
+            <Thead>
+              <Tr>
+                <Th>STUDENT ID</Th>
+                <Th>STUDENT NAME</Th>
+                <Th isNumeric>ACTIVITY NUMBER</Th>
+                <Th isNumeric>ACTIVITY SCORE</Th>
+              </Tr>
+            </Thead>
+          )}
           <Tbody alignItems="center" justifyContent="center">
             {activityList.map((val, index) => {
               return (
