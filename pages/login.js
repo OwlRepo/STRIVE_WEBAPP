@@ -37,7 +37,6 @@ export default function Login() {
       .post("https://opdbs.vercel.app/api/checkid/login", jsonData)
       .then((resp) => {
         if (typeof resp.data !== "object" && resp.data !== null) {
-          setIsVerifyingLogin(false);
           toast({
             title: "Log in failed",
             description: resp.data,
@@ -46,8 +45,8 @@ export default function Login() {
             isClosable: true,
             position: "bottom-right",
           });
-        } else {
           setIsVerifyingLogin(false);
+        } else {
           userDataContext.setUserData({
             dataObject: resp.data,
           });
@@ -61,6 +60,7 @@ export default function Login() {
             isClosable: true,
             position: "bottom-right",
           });
+          setIsVerifyingLogin(false);
         }
         return (resp = resp.data);
       })
