@@ -49,7 +49,7 @@ export default function Login() {
             Forgot Password?
           </Text>
           <Link
-            href={navLoginButtonContext.isLoggedIn ? "/login" : "/dashboard"}
+            href={navLoginButtonContext.isLoggedIn ? "/dashboard" : "/login"}
           >
             <Button
               backgroundColor={Colors.green}
