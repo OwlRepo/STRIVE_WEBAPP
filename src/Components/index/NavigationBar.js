@@ -12,14 +12,15 @@ import LoadingBar from "react-top-loading-bar";
 
 import Colors from "../../Constants/Colors";
 import NavLoaderContext from "../../Context/NavLoaderContext";
+import NavLoginButtonContext from "../../Context/NavLogInButtonContext";
 export default function NavigationBar() {
   const getWindowSize = useWindowSize();
-
+  const navLoginButtonContext = useContext(NavLoginButtonContext);
   return (
     <>
       <Flex backgroundColor="#00adb5" {...styleProps.navBarContainer}>
         <Flex flex={1}>
-          <Link href="/">
+          <Link href={navLoginButtonContext.isLoggedIn ? "/dashboard" : "/"}>
             <Heading cursor="pointer" color={Colors.white}>
               STRIVE
             </Heading>
