@@ -2,7 +2,7 @@ import { createContext, useRef, useState } from "react";
 
 const NavLoginButtonContext = createContext({
   isLoggedIn: Boolean,
-  buttonText: "LOG IN",
+  buttonText: String,
   buttonRoute: "/login",
   handleLoggedInState: () => {},
 });
@@ -14,9 +14,10 @@ export function NavLoginButtonContextProvider(props) {
 
   function handleLoggedInState() {
     setIsLoggedIn(!isLoggedIn);
-    isLoggedIn ? setButtonText("LOG OUT") : setButtonText("LOG IN");
 
     isLoggedIn ? setButtonRoute("/") : setButtonRoute("/login");
+    isLoggedIn ? setButtonText("LOG OUT") : setButtonText("LOG IN");
+    console.log(isLoggedIn + buttonText + buttonRoute);
   }
 
   const context = {

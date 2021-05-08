@@ -6,7 +6,7 @@ import { Flex } from "@chakra-ui/layout";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import NavigationBar from "../src/Components/index/NavigationBar";
 import Colors from "../src/Constants/Colors";
 import NavLoginButtonContext from "../src/Context/NavLogInButtonContext";
@@ -16,6 +16,9 @@ import styles from "../styles/Home.module.css";
 export default function Login() {
   const getWindowSize = useWindowSize();
   const navLoginButtonContext = useContext(NavLoginButtonContext);
+  useEffect(() => {
+    // console.log(navLoginButtonContext.isLoggedIn);
+  }, []);
   return (
     <>
       <Head>
@@ -43,7 +46,6 @@ export default function Login() {
             cursor="pointer"
             onClick={() => {
               navLoginButtonContext.handleLoggedInState();
-              console.log(navLoginButtonContext.isLoggedIn);
             }}
           >
             Forgot Password?
@@ -55,7 +57,9 @@ export default function Login() {
               backgroundColor={Colors.green}
               color={Colors.white}
               colorScheme="cyan"
-              onClick={() => {}}
+              onClick={() => {
+                console.log(navLoginButtonContext.isLoggedIn);
+              }}
             >
               LOG IN
             </Button>

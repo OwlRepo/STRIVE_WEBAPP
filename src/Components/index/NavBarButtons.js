@@ -19,7 +19,7 @@ export default function NavBarButtons() {
       <Button variant="ghost" color="white" colorScheme="blackAlpha">
         STRIVE Mobile App
       </Button>
-      <Link href={navLoginButtonContext.buttonRoute}>
+      <Link href={navLoginButtonContext.isLoggedIn ? "/" : "/login"}>
         <Button
           variant="solid"
           shadow="lg"
@@ -28,11 +28,11 @@ export default function NavBarButtons() {
           colorScheme="whiteAlpha"
           onClick={() =>
             navLoginButtonContext.isLoggedIn
-              ? null
-              : navLoginButtonContext.handleLoggedInState()
+              ? navLoginButtonContext.handleLoggedInState()
+              : null
           }
         >
-          {navLoginButtonContext.buttonText}
+          {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
         </Button>
       </Link>
     </Flex>
