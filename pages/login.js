@@ -3,22 +3,74 @@ import { Input } from "@chakra-ui/input";
 import { Text } from "@chakra-ui/layout";
 import { Heading } from "@chakra-ui/layout";
 import { Flex } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/toast";
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import NavigationBar from "../src/Components/index/NavigationBar";
 import Colors from "../src/Constants/Colors";
 import NavLoginButtonContext from "../src/Context/NavLogInButtonContext";
 import useWindowSize from "../src/CustomHooks/UseWindows";
 import styles from "../styles/Home.module.css";
+import Router from "next/router";
+import { Spinner } from "@chakra-ui/spinner";
+import UserDataContext from "../src/Context/UserDataContext";
 
 export default function Login() {
   const getWindowSize = useWindowSize();
   const navLoginButtonContext = useContext(NavLoginButtonContext);
-  useEffect(() => {
-    // console.log(navLoginButtonContext.isLoggedIn);
-  }, []);
+  const userDataContext = useContext(UserDataContext);
+  const toast = useToast();
+  const [accountID, setAccountID] = useState("");
+  const [password, setPassword] = useState("");
+  const [isVerifyingLogin, setIsVerifyingLogin] = useState(false);
+
+  async function verifyLogin() {
+    setIsVerifyingLogin(true);
+    const jsonData = {
+      id: accountID,
+      password: password,
+    };
+    var accountCheck = await axios
+      .post("https://opdbs.vercel.app/api/checkid/login", jsonData)
+      .then((resp) => {
+        if (typeof resp.data !== "object" && resp.data !== null) {
+          setIsVerifyingLogin(false);
+          toast({
+            title: "Log in failed",
+            description: resp.data,
+            status: "error",
+            duration: 2500,
+            isClosable: true,
+            position: "bottom-right",
+          });
+        } else {
+          setIsVerifyingLogin(false);
+          userDataContext.setUserData({
+            dataObject: resp.data,
+          });
+          navLoginButtonContext.handleLoggedInState();
+          Router.push("/dashboard");
+          toast({
+            title: "Log in successful",
+            description: "Redirecting to dashboard.",
+            status: "success",
+            duration: 2500,
+            isClosable: true,
+            position: "bottom-right",
+          });
+        }
+        return (resp = resp.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  // useEffect(() => {
+  //   // console.log(navLoginButtonContext.isLoggedIn);
+  // }, []);
   return (
     <>
       <Head>
@@ -36,18 +88,23 @@ export default function Login() {
           }
           {...styleProps.formCardContainer}
         >
-          <Input placeholder="Account ID" marginBottom="3" autoFocus />
-          <Input placeholder="Password" type="password" />
+          <Input
+            onChange={(value) => setAccountID(value.target.value)}
+            placeholder="Account ID"
+            marginBottom="3"
+            autoFocus
+          />
+          <Input
+            onChange={(value) => setPassword(value.target.value)}
+            placeholder="Password"
+            type="password"
+          />
           <Text
             marginBottom="5"
             textAlign="right"
             fontSize="13"
             fontWeight="bold"
             cursor="pointer"
-            onClick={() => {
-              // Transfer this function when if the login success
-              navLoginButtonContext.handleLoggedInState();
-            }}
           >
             Forgot Password?
           </Text>
@@ -58,11 +115,20 @@ export default function Login() {
               backgroundColor={Colors.green}
               color={Colors.white}
               colorScheme="cyan"
-              onClick={() => {
-                console.log(navLoginButtonContext.isLoggedIn);
-              }}
+              onClick={verifyLogin}
+              disabled={isVerifyingLogin}
             >
-              LOG IN
+              {isVerifyingLogin ? (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor={Colors.lightGreen}
+                  color={Colors.white}
+                  size="md"
+                />
+              ) : (
+                "LOGIN"
+              )}
             </Button>
           </Link>
         </Flex>
