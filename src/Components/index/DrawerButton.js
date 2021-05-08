@@ -10,16 +10,17 @@ import {
   DrawerBody,
   DrawerFooter,
 } from "@chakra-ui/modal";
-import React from "react";
+import React, { useContext } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Link from "next/link";
 import { Divider } from "@chakra-ui/layout";
 import Colors from "../../Constants/Colors";
+import NavLoginButtonContext from "../../Context/NavLogInButtonContext";
 
 export default function DrawerButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
-
+  const navLoginButtonContext = useContext(NavLoginButtonContext);
   return (
     <Flex flex={1} flexDirection="row" justifyContent="flex-end">
       <Button
@@ -53,16 +54,21 @@ export default function DrawerButton() {
                 STRIVE Mobile App
               </Button>
 
-              <Link href="/login">
+              <Link href={navLoginButtonContext.isLoggedIn ? "/" : "/login"}>
                 <Button
                   variant="solid"
                   shadow="lg"
                   backgroundColor="#00adb5"
                   color={Colors.white}
                   colorScheme="cyan"
-                  onClick={onClose}
+                  onClick={() => {
+                    onClose();
+                    navLoginButtonContext.isLoggedIn
+                      ? navLoginButtonContext.handleLoggedInState()
+                      : null;
+                  }}
                 >
-                  Log in
+                  {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
                 </Button>
               </Link>
             </Flex>

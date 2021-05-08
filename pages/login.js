@@ -45,6 +45,7 @@ export default function Login() {
             fontWeight="bold"
             cursor="pointer"
             onClick={() => {
+              // Transfer this function when if the login success
               navLoginButtonContext.handleLoggedInState();
             }}
           >
