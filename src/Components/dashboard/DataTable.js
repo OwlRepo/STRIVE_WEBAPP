@@ -26,15 +26,18 @@ import {
 import axios from "axios";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserDataContext from "../../Context/UserDataContext";
+import useWindowSize from "../../CustomHooks/UseWindows";
 export default function DataTable() {
+  const getWindowSize = useWindowSize();
   const [activity, setActivity] = useState("Activity 1");
   const [activityList, setActivityList] = useState([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
   const userDataContext = useContext(UserDataContext);
+
   async function getActivityScores(props) {
     setIsDataLoading(!isDataLoading);
     if (userDataContext.data.type == 0) {
-      var activityInfo = axios
+      var activityInfo = await axios
         .get(
           "https://opdbs.vercel.app/api/activity/student/" +
             userDataContext.data.id
@@ -49,7 +52,7 @@ export default function DataTable() {
         });
     } else {
       setIsDataLoading(false);
-      var activityInfo = axios
+      var activityInfo = await axios
         .get(
           `https://opdbs.vercel.app/api/activity/studentsAct${props.actNumber}`
         )
@@ -67,17 +70,7 @@ export default function DataTable() {
   }, []);
 
   return (
-    <Flex
-      flex={9}
-      flexDirection="column"
-      justifyContent="center"
-      backgroundColor="#ffffff"
-      alignItems="flex-end"
-      justifyContent="center"
-      shadow="lg"
-      padding="10"
-      borderRadius="lg"
-    >
+    <Flex {...styleProps.dataTableContainer}>
       {userDataContext.data.type == 0 ? null : (
         <Flex flexDirection="row" alignItems="center">
           <Text marginRight="2.5">Select Activity: </Text>
@@ -112,7 +105,7 @@ export default function DataTable() {
               <Tr>
                 <Th>ACTIVITY</Th>
                 <Th>NAME</Th>
-                <Th isNumeric>SCORE</Th>
+                <Th>SCORE</Th>
               </Tr>
             </Thead>
           ) : (
@@ -120,7 +113,7 @@ export default function DataTable() {
               <Tr>
                 <Th>STUDENT ID</Th>
                 <Th>STUDENT NAME</Th>
-                <Th isNumeric>SCORE</Th>
+                <Th>SCORE</Th>
               </Tr>
             </Thead>
           )}
@@ -131,7 +124,7 @@ export default function DataTable() {
                   <Tr key={index}>
                     <Td>{index + 1}</Td>
                     <Td>{val.id.title}</Td>
-                    <Td isNumeric>{val.id.score}</Td>
+                    <Td>{val.id.score}</Td>
                   </Tr>
                 );
               } else {
@@ -142,7 +135,7 @@ export default function DataTable() {
                       {val.id.lastName}, {val.id.firstName}{" "}
                       {val.id.middleInitial}
                     </Td>
-                    <Td isNumeric>{val.id.score}</Td>
+                    <Td>{val.id.score}</Td>
                   </Tr>
                 );
               }
@@ -153,3 +146,17 @@ export default function DataTable() {
     </Flex>
   );
 }
+
+const styleProps = {
+  dataTableContainer: {
+    flex: 9,
+    flexDirection: "column",
+    justifyContent: "center",
+    backgroundColor: "#ffffff",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    shadow: "lg",
+    padding: "10",
+    borderRadius: "lg",
+  },
+};
