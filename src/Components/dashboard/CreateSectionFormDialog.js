@@ -178,7 +178,14 @@ export default function CreateSectionFormDialog(props) {
               {studentList.map((value, index) => {
                 console.log(value.id.id);
                 return (
-                  <Checkbox key={index} value={value.id.id} mt="5">
+                  <Checkbox
+                    key={index}
+                    value={value.id.id}
+                    mt="5"
+                    onChange={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
                     {value.id.lastName}, {value.id.firstName}{" "}
                     {value.id.middleInitial}
                   </Checkbox>
