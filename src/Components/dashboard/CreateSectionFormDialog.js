@@ -172,7 +172,7 @@ export default function CreateSectionFormDialog(props) {
             </FormHelperText>
             <CheckboxGroup
               onChange={(val) => {
-                setStudentList(val);
+                // setStudentList(val);
                 console.log(val);
               }}
             >
@@ -185,6 +185,9 @@ export default function CreateSectionFormDialog(props) {
                     mt="5"
                     onChange={(e) => {
                       e.preventDefault();
+                      setStudentList((prevData) => {
+                        return prevData.concat(e.target.checked);
+                      });
                     }}
                   >
                     {value.id.lastName}, {value.id.firstName}{" "}
