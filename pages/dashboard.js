@@ -35,7 +35,7 @@ export default function dashboard(props) {
         {...styleProps.dashboardWrapper}
       >
         {getWindowSize.width < 960 ? (
-          <Heading>Please rotate your phone to landscape mode.</Heading>
+          <Heading>Mobile Devices are not supported</Heading>
         ) : (
           <>
             <Flex flexDirection="column">
