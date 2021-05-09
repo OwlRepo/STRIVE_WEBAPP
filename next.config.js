@@ -1,5 +1,11 @@
-module.exports = (phase, { defaultConfig }) => {
-  return {
-    /* config options here */
-  };
+// next.config.js
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://api.example.com/:path*",
+      },
+    ];
+  },
 };
