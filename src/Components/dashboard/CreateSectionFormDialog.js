@@ -109,7 +109,6 @@ export default function CreateSectionFormDialog(props) {
     var getAllStudentsInfo = await axios
       .get("https://opdbs.vercel.app/api/students")
       .then((response) => {
-        console.log(response.data);
         return setStudentList(response.data);
       })
       .catch((e) => {
@@ -173,19 +172,18 @@ export default function CreateSectionFormDialog(props) {
             </FormHelperText>
             <CheckboxGroup
               onChange={(val) => {
-                setStudentList(val);
+                // setStudentList(val);
               }}
             >
-              <Flex flexDirection="column">
-                {studentList.map((value, index) => {
-                  return (
-                    <Checkbox key={index} value={value.id.id} mt="5">
-                      {value.id.lastName}, {value.id.firstName}{" "}
-                      {value.id.middleInitial}
-                    </Checkbox>
-                  );
-                })}
-              </Flex>
+              {studentList.map((value, index) => {
+                console.log(value.id.id);
+                return (
+                  <Checkbox key={index} value={value.id.id} mt="5">
+                    {value.id.lastName}, {value.id.firstName}{" "}
+                    {value.id.middleInitial}
+                  </Checkbox>
+                );
+              })}
             </CheckboxGroup>
           </FormControl>
         </ModalBody>
