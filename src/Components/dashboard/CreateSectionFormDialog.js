@@ -22,6 +22,7 @@ import {
   CheckboxGroup,
   Checkbox,
   Divider,
+  Flex,
 } from "@chakra-ui/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
@@ -41,7 +42,7 @@ export default function CreateSectionFormDialog(props) {
 
   const toast = useToast();
   // const [accountType, setAccountType] = useState("");
-  async function submitAccountForm() {
+  async function submitSectionForm() {
     if (
       // firstName == "" ||
       // lastName == "" ||
@@ -49,7 +50,8 @@ export default function CreateSectionFormDialog(props) {
       // confirmPassword == "" ||
       // email == "" ||
       section == "" ||
-      yearLevel == ""
+      yearLevel == "" ||
+      studentList.length == 0
     ) {
       toast({
         title: "Empty text field found!",
@@ -60,16 +62,11 @@ export default function CreateSectionFormDialog(props) {
         position: "bottom-right",
       });
     } else {
-      //Create Account Form
+      //Create Section Form
       var form = {
-        firstName: firstName,
-        middleInitial: middleInitial,
-        lastName: lastName,
-        suffix: suffix,
-        confirmPassword: confirmPassword,
-        email: email,
-        section: section,
+        sectionName: section,
         yearLevel: yearLevel,
+        studentList: studentList,
       };
       //POST Request to attempt creating a new account.
       var attemptCreateAccount = await axios
@@ -172,14 +169,16 @@ export default function CreateSectionFormDialog(props) {
                 setStudentList(val);
               }}
             >
-              {studentList.map((value, index) => {
-                return (
-                  <Checkbox key={index} value={value.id.id} mt="5" mb="5">
-                    {value.id.lastName}, {value.id.firstName}{" "}
-                    {value.id.middleInitial}
-                  </Checkbox>
-                );
-              })}
+              <Flex flexDirection="column">
+                {studentList.map((value, index) => {
+                  return (
+                    <Checkbox key={index} value={value.id.id} mt="5" mb="5">
+                      {value.id.lastName}, {value.id.firstName}{" "}
+                      {value.id.middleInitial}
+                    </Checkbox>
+                  );
+                })}
+              </Flex>
             </CheckboxGroup>
           </FormControl>
         </ModalBody>
@@ -187,7 +186,7 @@ export default function CreateSectionFormDialog(props) {
           <Button variant="ghost" onClick={props.onClose}>
             CLOSE
           </Button>
-          <Button colorScheme="blue" mr={3} onClick={submitAccountForm}>
+          <Button colorScheme="blue" mr={3} onClick={submitSectionForm}>
             SUBMIT
           </Button>
         </ModalFooter>

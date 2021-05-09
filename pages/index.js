@@ -16,12 +16,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex {...styleProps.indexWrapper}>
-        {/* <Image
+        <Image
           src={"/study_banner.svg"}
           alt="Picture of the author"
           width={600}
           height={500}
-        /> */}
+        />
         <Flex flexDirection={getWindowSize.width < 960 ? "column" : "row"}>
           <HStack>
             <Heading>LEARN</Heading>
