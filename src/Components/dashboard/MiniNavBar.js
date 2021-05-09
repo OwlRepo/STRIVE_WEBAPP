@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/layout";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Colors from "../../Constants/Colors";
 import { Button } from "@chakra-ui/button";
 import Link from "next/link";
@@ -8,10 +8,17 @@ import { IoIosPersonAdd, IoIosCreate } from "react-icons/io";
 import { FaListAlt } from "react-icons/fa";
 import NavLoginButtonContext from "../../Context/NavLogInButtonContext";
 import UserDataContext from "../../Context/UserDataContext";
+import CreateAccountFormDialog from "./CreateAccountFormDialog";
+import CreateSectionFormDialog from "../../Components/dashboard/CreateSectionFormDialog";
+import { useDisclosure } from "@chakra-ui/hooks";
+import LogOutDialog from "./LogOutDialog";
 
 export default function MiniNavBar() {
   const navLoginButtonContext = useContext(NavLoginButtonContext);
   const userDataContext = useContext(UserDataContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const onLogoutDialogClose = () => setIsLogoutDialogOpen(false);
   return (
     <Flex
       flexDirection="column"
@@ -27,6 +34,7 @@ export default function MiniNavBar() {
             leftIcon={<IoIosPersonAdd color={Colors.green} size={25} />}
             variant="ghost"
             justifyContent="left"
+            onClick={onOpen}
           >
             Create New Account
           </Button>
@@ -49,22 +57,21 @@ export default function MiniNavBar() {
         View Scores
       </Button>
       <br />
-      <Link href={navLoginButtonContext.isLoggedIn ? "/" : "/login"}>
-        <Button
-          variant="solid"
-          shadow="lg"
-          backgroundColor={Colors.green}
-          color={Colors.white}
-          colorScheme="cyan"
-          onClick={() =>
-            navLoginButtonContext.isLoggedIn
-              ? navLoginButtonContext.handleLoggedInState()
-              : null
-          }
-        >
-          {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
-        </Button>
-      </Link>
+      <Button
+        variant="solid"
+        shadow="lg"
+        backgroundColor={Colors.green}
+        color={Colors.white}
+        colorScheme="cyan"
+        onClick={() => {
+          navLoginButtonContext.isLoggedIn ? setIsLogoutDialogOpen(true) : null;
+        }}
+      >
+        {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
+      </Button>
+      <CreateAccountFormDialog isOpen={isOpen} onClose={onClose} />
+      {/* <CreateSectionFormDialog isOpen={isOpen} onClose={onClose} /> */}
+      <LogOutDialog isOpen={isLogoutDialogOpen} onClose={onLogoutDialogClose} />
     </Flex>
   );
 }

@@ -10,17 +10,20 @@ import {
   DrawerBody,
   DrawerFooter,
 } from "@chakra-ui/modal";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Link from "next/link";
 import { Divider } from "@chakra-ui/layout";
 import Colors from "../../Constants/Colors";
 import NavLoginButtonContext from "../../Context/NavLogInButtonContext";
-
+import Router from "next/router";
 export default function DrawerButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   const navLoginButtonContext = useContext(NavLoginButtonContext);
+
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const onLogoutDialogClose = () => setIsLogoutDialogOpen(false);
   return (
     <Flex flex={1} flexDirection="row" justifyContent="flex-end">
       <Button
@@ -54,23 +57,21 @@ export default function DrawerButton() {
                 STRIVE Mobile App
               </Button>
 
-              <Link href={navLoginButtonContext.isLoggedIn ? "/" : "/login"}>
-                <Button
-                  variant="solid"
-                  shadow="lg"
-                  backgroundColor="#00adb5"
-                  color={Colors.white}
-                  colorScheme="cyan"
-                  onClick={() => {
-                    onClose();
-                    navLoginButtonContext.isLoggedIn
-                      ? navLoginButtonContext.handleLoggedInState()
-                      : null;
-                  }}
-                >
-                  {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
-                </Button>
-              </Link>
+              <Button
+                variant="solid"
+                shadow="lg"
+                backgroundColor="#00adb5"
+                color={Colors.white}
+                colorScheme="cyan"
+                onClick={() => {
+                  onClose();
+                  navLoginButtonContext.isLoggedIn
+                    ? setIsLogoutDialogOpen(true)
+                    : Router.push("/login");
+                }}
+              >
+                {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
+              </Button>
             </Flex>
           </DrawerBody>
           <DrawerFooter>THE FOOTER</DrawerFooter>

@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/layout";
+import { Center, Flex, Heading, Text, VStack } from "@chakra-ui/layout";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Table,
@@ -27,6 +27,7 @@ import axios from "axios";
 import { AiFillCaretDown } from "react-icons/ai";
 import UserDataContext from "../../Context/UserDataContext";
 import useWindowSize from "../../CustomHooks/UseWindows";
+import Colors from "../../Constants/Colors";
 export default function DataTable() {
   const getWindowSize = useWindowSize();
   const [activity, setActivity] = useState("Activity 1");
@@ -35,7 +36,7 @@ export default function DataTable() {
   const userDataContext = useContext(UserDataContext);
 
   async function getActivityScores(props) {
-    setIsDataLoading(!isDataLoading);
+    setIsDataLoading(true);
     if (userDataContext.data.type == 0) {
       var activityInfo = await axios
         .get(
@@ -51,7 +52,6 @@ export default function DataTable() {
           setIsDataLoading(false);
         });
     } else {
-      setIsDataLoading(false);
       var activityInfo = await axios
         .get(
           `https://opdbs.vercel.app/api/activity/studentsAct${props.actNumber}`
@@ -70,34 +70,62 @@ export default function DataTable() {
   }, []);
 
   return (
-    <Flex {...styleProps.dataTableContainer}>
+    <Flex
+      {...styleProps.dataTableContainer}
+      alignItems="stretch"
+      justifyContent="space-around"
+    >
       {userDataContext.data.type == 0 ? null : (
-        <Flex flexDirection="row" alignItems="center">
-          <Text marginRight="2.5">Select Activity: </Text>
-          <Menu>
-            <MenuButton as={Button} rightIcon={<AiFillCaretDown />}>
-              {activity}
-            </MenuButton>
-            <MenuList
-              onClick={(value) => {
-                setActivity(value.target.value);
-                const splittedString = value.target.value.split("");
-                console.log(splittedString[splittedString.length - 1]);
-                getActivityScores({
-                  actNumber: splittedString[splittedString.length - 1],
-                });
-              }}
-            >
-              <MenuItem value="Activity 1">Activity 1</MenuItem>
-              <MenuItem value="Activity 2">Activity 2</MenuItem>
-              <MenuItem value="Activity 3">Activity 3</MenuItem>
-            </MenuList>
-          </Menu>
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          marginBottom={"7"}
+        >
+          <Heading alignItems="start">
+            {userDataContext.data.type == 0
+              ? "Activity Scores"
+              : "Student Records"}
+          </Heading>
+          <Flex flexDirection="row" alignItems="center">
+            <Text marginRight="2.5">Select Activity: </Text>
+            <Menu>
+              <MenuButton as={Button} rightIcon={<AiFillCaretDown />}>
+                {activity}
+              </MenuButton>
+              <MenuList
+                onClick={(value) => {
+                  setActivity(value.target.value);
+                  const splittedString = value.target.value.split("");
+                  setIsDataLoading(true);
+                  getActivityScores({
+                    actNumber: splittedString[splittedString.length - 1],
+                  });
+                }}
+              >
+                <MenuItem value="Activity 1">Activity 1</MenuItem>
+                <MenuItem value="Activity 2">Activity 2</MenuItem>
+                <MenuItem value="Activity 3">Activity 3</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
         </Flex>
       )}
 
       {isDataLoading ? (
-        <Spinner />
+        <Center>
+          <VStack>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor={Colors.lightGreen}
+              color={Colors.white}
+              size="xl"
+            />
+            <br />
+            <Text>Fetching Data...</Text>
+          </VStack>
+        </Center>
       ) : (
         <Table variant="striped" size="lg" colorScheme="teal">
           {userDataContext.data.type == 0 ? (
@@ -151,9 +179,8 @@ const styleProps = {
   dataTableContainer: {
     flex: 9,
     flexDirection: "column",
-    justifyContent: "center",
     backgroundColor: "#ffffff",
-    alignItems: "flex-end",
+    alignItems: "",
     justifyContent: "center",
     shadow: "lg",
     padding: "10",
