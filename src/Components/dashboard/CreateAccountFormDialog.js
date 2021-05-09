@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -34,6 +34,10 @@ export default function CreateAccountFormDialog(props) {
   const [section, setSection] = useState("");
   const [sectionList, setSectionList] = useState([]);
   const [yearLevel, setYearLevel] = useState("");
+
+  useEffect(() => {
+    setSectionList([]);
+  }, []);
 
   const toast = useToast();
   // const [accountType, setAccountType] = useState("");
