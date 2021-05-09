@@ -146,28 +146,32 @@ export default function DataTable() {
             </Thead>
           )}
           <Tbody alignItems="center" justifyContent="center">
-            {activityList.map((val, index) => {
-              if (userDataContext.data.type == 0) {
-                return (
-                  <Tr key={index}>
-                    <Td>{index + 1}</Td>
-                    <Td>{val.id.title}</Td>
-                    <Td>{val.id.score}</Td>
-                  </Tr>
-                );
-              } else {
-                return (
-                  <Tr key={index}>
-                    <Td>{val.id.id}</Td>
-                    <Td>
-                      {val.id.lastName}, {val.id.firstName}{" "}
-                      {val.id.middleInitial}
-                    </Td>
-                    <Td>{val.id.score}</Td>
-                  </Tr>
-                );
-              }
-            })}
+            {activity.length != 0 ? (
+              activityList.map((val, index) => {
+                if (userDataContext.data.type == 0) {
+                  return (
+                    <Tr key={index}>
+                      <Td>{index + 1}</Td>
+                      <Td>Activity {val.id.activityNumber}</Td>
+                      <Td>{val.id.score}</Td>
+                    </Tr>
+                  );
+                } else {
+                  return (
+                    <Tr key={index}>
+                      <Td>{val.id.id}</Td>
+                      <Td>
+                        {val.id.lastName}, {val.id.firstName}{" "}
+                        {val.id.middleInitial}
+                      </Td>
+                      <Td>{val.id.score}</Td>
+                    </Tr>
+                  );
+                }
+              })
+            ) : (
+              <Text>Table is empty.</Text>
+            )}
           </Tbody>
         </Table>
       )}

@@ -94,7 +94,7 @@ export default function CreateAccountFormDialog(props) {
             status: "success",
             duration: 2500,
             isClosable: true,
-            position: "bottom-right",
+            position: "top",
           });
         })
         .then((resp) => {
