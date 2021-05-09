@@ -172,12 +172,10 @@ export default function CreateSectionFormDialog(props) {
             </FormHelperText>
             <CheckboxGroup
               onChange={(val) => {
-                // setStudentList(val);
-                console.log(val);
+                return setStudentList(val);
               }}
             >
               {studentList.map((value, index) => {
-                console.log(value.id.id);
                 return (
                   <Checkbox
                     key={index}
