@@ -173,6 +173,7 @@ export default function CreateSectionFormDialog(props) {
             <CheckboxGroup
               onChange={(val) => {
                 // setStudentList(val);
+                console.log(val);
               }}
             >
               {studentList.map((value, index) => {
