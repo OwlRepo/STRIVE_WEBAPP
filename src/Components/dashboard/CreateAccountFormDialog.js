@@ -38,6 +38,17 @@ export default function CreateAccountFormDialog(props) {
   const toast = useToast();
   // const [accountType, setAccountType] = useState("");
   async function submitAccountForm() {
+    var form = {
+      firstName: firstName,
+      middleInitial: middleInitial,
+      lastName: lastName,
+      suffix: suffix,
+      confirmPassword: confirmPassword,
+      email: email,
+      section: section,
+      yearLevel: yearLevel,
+    };
+    console.log(form);
     if (
       firstName == "" ||
       lastName == "" ||
@@ -57,16 +68,7 @@ export default function CreateAccountFormDialog(props) {
       });
     } else {
       //Create Account Form
-      var form = {
-        firstName: firstName,
-        middleInitial: middleInitial,
-        lastName: lastName,
-        suffix: suffix,
-        confirmPassword: confirmPassword,
-        email: email,
-        section: section,
-        yearLevel: yearLevel,
-      };
+
       //POST Request to attempt creating a new account.
       var attemptCreateAccount = await axios
         .post("https://opdbs.vercel.app/api/student", form)
@@ -200,13 +202,16 @@ export default function CreateAccountFormDialog(props) {
               placeholder="Select section"
               onChange={(val) => {
                 console.log(val.target.value);
+                setSection(val.target.value);
               }}
               disabled={sectionList.length == 0 ? true : false}
             >
               {sectionList.map((val, index) => {
-                <option value={val} key={index}>
-                  {val.id.sectionName}
-                </option>;
+                return (
+                  <option value={val.id.sectionName} key={index}>
+                    {val.id.sectionName}
+                  </option>
+                );
               })}
             </Select>
           </FormControl>
