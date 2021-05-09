@@ -45,7 +45,6 @@ export default function Login() {
             isClosable: true,
             position: "bottom-right",
           });
-          setIsVerifyingLogin(false);
         } else {
           userDataContext.setUserData({
             dataObject: resp.data,
@@ -60,9 +59,11 @@ export default function Login() {
             isClosable: true,
             position: "bottom-right",
           });
-          setIsVerifyingLogin(false);
         }
         return (resp = resp.data);
+      })
+      .then((resp) => {
+        setIsVerifyingLogin(false);
       })
       .catch((error) => {
         console.log(error);

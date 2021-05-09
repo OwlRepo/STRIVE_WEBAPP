@@ -78,8 +78,8 @@ export default function CreateAccountFormDialog(props) {
         lastName: lastName,
         suffix: suffix,
         password: confirmPassword,
-        email: email,
-        section: section,
+        personalEmail: email,
+        sectionName: section,
         yearLevel: yearLevel,
       };
       console.log(form);

@@ -17,6 +17,7 @@ import { Divider } from "@chakra-ui/layout";
 import Colors from "../../Constants/Colors";
 import NavLoginButtonContext from "../../Context/NavLogInButtonContext";
 import Router from "next/router";
+import LogOutDialog from "../dashboard/LogOutDialog";
 export default function DrawerButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -77,6 +78,7 @@ export default function DrawerButton() {
           <DrawerFooter>THE FOOTER</DrawerFooter>
         </DrawerContent>
       </Drawer>
+      <LogOutDialog isOpen={isLogoutDialogOpen} onClose={onLogoutDialogClose} />
     </Flex>
   );
 }
