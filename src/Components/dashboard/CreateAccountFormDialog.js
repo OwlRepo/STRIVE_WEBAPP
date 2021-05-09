@@ -193,6 +193,7 @@ export default function CreateAccountFormDialog(props) {
               placeholder="Select year Level"
               onChange={(val) => {
                 loadSections({ yearLevel: val.target.value });
+                setYearLevel(val.target.value);
               }}
             >
               <option value="1">1</option>
