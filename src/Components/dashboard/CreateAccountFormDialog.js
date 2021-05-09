@@ -97,7 +97,7 @@ export default function CreateAccountFormDialog(props) {
       .get(`https://opdbs.vercel.app/api/sections/${props.yearLevel}`)
       .then((resp) => {
         console.log(resp.data);
-        // setSectionList(resp.data);
+        setSectionList(resp.data);
       })
       .catch((e) => {
         console.log(e);
@@ -205,7 +205,7 @@ export default function CreateAccountFormDialog(props) {
             >
               {sectionList.map((val, index) => {
                 <option value={val} key={index}>
-                  {val}
+                  {val.id.sectionName}
                 </option>;
               })}
             </Select>
