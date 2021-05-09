@@ -157,8 +157,8 @@ export default function CreateSectionFormDialog(props) {
               disabled={sectionList.length == 0 ? true : false}
             >
               {sectionList.map((val, index) => {
-                <option value={val} key={index}>
-                  {val}
+                <option value={val.id.sectionName} key={index}>
+                  {val.id.sectionName}
                 </option>;
               })}
             </Select>
@@ -172,7 +172,7 @@ export default function CreateSectionFormDialog(props) {
               <Flex flexDirection="column">
                 {studentList.map((value, index) => {
                   return (
-                    <Checkbox key={index} value={value.id.id} mt="5" mb="5">
+                    <Checkbox key={index} value={value.id.id} mt="5">
                       {value.id.lastName}, {value.id.firstName}{" "}
                       {value.id.middleInitial}
                     </Checkbox>
