@@ -151,20 +151,20 @@ export default function DataTable() {
                 if (userDataContext.data.type == 0) {
                   return (
                     <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>Activity {val.id.activityNumber}</Td>
-                      <Td>{val.id.score}</Td>
+                      <Td key={index + 1}>{index + 1}</Td>
+                      <Td key={val.id.id}>Activity {val.id.activityNumber}</Td>
+                      <Td key={index + 2}>{val.id.score}</Td>
                     </Tr>
                   );
                 } else {
                   return (
                     <Tr key={index}>
-                      <Td>{val.id.id}</Td>
-                      <Td>
+                      <Td key={index + 1}>{val.id.id}</Td>
+                      <Td key={val.id.id}>
                         {val.id.lastName}, {val.id.firstName}{" "}
                         {val.id.middleInitial}
                       </Td>
-                      <Td>{val.id.score}</Td>
+                      <Td key={index + 2}>{val.id.score}</Td>
                     </Tr>
                   );
                 }

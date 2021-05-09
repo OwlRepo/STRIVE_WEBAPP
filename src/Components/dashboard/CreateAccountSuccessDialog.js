@@ -34,7 +34,7 @@ export default function CreateAccountSuccessDialog(props) {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Create New Account</ModalHeader>
+        <ModalHeader>Account Log in Credentials</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FormControl>

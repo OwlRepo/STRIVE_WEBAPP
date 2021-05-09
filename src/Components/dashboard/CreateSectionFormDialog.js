@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -19,31 +19,35 @@ import {
   NumberDecrementStepper,
   Select,
   useToast,
+  CheckboxGroup,
+  Checkbox,
+  Divider,
 } from "@chakra-ui/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import axios from "axios";
 
 export default function CreateSectionFormDialog(props) {
-  const [firstName, setFirstName] = useState("");
-  const [middleInitial, setMiddleInitial] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [suffix, setSuffix] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [middleInitial, setMiddleInitial] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [suffix, setSuffix] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  // const [email, setEmail] = useState("");
   const [section, setSection] = useState("");
   const [sectionList, setSectionList] = useState([]);
+  const [studentList, setStudentList] = useState([]);
   const [yearLevel, setYearLevel] = useState("");
 
   const toast = useToast();
   // const [accountType, setAccountType] = useState("");
   async function submitAccountForm() {
     if (
-      firstName == "" ||
-      lastName == "" ||
-      password == "" ||
-      confirmPassword == "" ||
-      email == "" ||
+      // firstName == "" ||
+      // lastName == "" ||
+      // password == "" ||
+      // confirmPassword == "" ||
+      // email == "" ||
       section == "" ||
       yearLevel == ""
     ) {
@@ -93,16 +97,32 @@ export default function CreateSectionFormDialog(props) {
   async function loadSections(props) {
     console.log("YEAR LEVEL: " + props.yearLevel);
     //Load all sections when user picks year level
-    // var getSectionList = await axios
-    //   .get(`/${props.yearLevel}`)
-    //   .then((resp) => {
-    //     console.log(resp.data);
-    //     setSectionList(resp.data);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
+    var getSectionList = await axios
+      .get(`https://opdbs.vercel.app/api/sections/${props.yearLevel}`)
+      .then((resp) => {
+        console.log(resp.data);
+        setSectionList(resp.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
+
+  async function loadAllStudents() {
+    var getAllStudentsInfo = await axios
+      .get("https://opdbs.vercel.app/api/students")
+      .then((response) => {
+        console.log(response.data);
+        return setStudentList(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  useEffect(() => {
+    loadAllStudents();
+  }, []);
 
   return (
     <Modal
@@ -145,6 +165,22 @@ export default function CreateSectionFormDialog(props) {
                 </option>;
               })}
             </Select>
+            <FormLabel>Student List</FormLabel>
+            <FormHelperText>Select student by checking the box.</FormHelperText>
+            <CheckboxGroup
+              onChange={(val) => {
+                setStudentList(val);
+              }}
+            >
+              {studentList.map((value, index) => {
+                return (
+                  <Checkbox key={index} value={value.id.id} mt="5" mb="5">
+                    {value.id.lastName}, {value.id.firstName}{" "}
+                    {value.id.middleInitial}
+                  </Checkbox>
+                );
+              })}
+            </CheckboxGroup>
           </FormControl>
         </ModalBody>
         <ModalFooter>
