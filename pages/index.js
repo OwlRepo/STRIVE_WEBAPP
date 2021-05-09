@@ -1,14 +1,11 @@
 import { Button } from "@chakra-ui/button";
-import { ButtonGroup } from "@chakra-ui/button";
-import { VStack } from "@chakra-ui/layout";
+import { HStack, VStack } from "@chakra-ui/layout";
 import { Heading } from "@chakra-ui/layout";
 import { Flex } from "@chakra-ui/layout";
 import Head from "next/head";
 import Image from "next/image";
-import NavigationBar from "../src/Components/index/NavigationBar";
 import Colors from "../src/Constants/Colors";
 import useWindowSize from "../src/CustomHooks/UseWindows";
-import styles from "../styles/Home.module.css";
 export default function Home() {
   const getWindowSize = useWindowSize();
   return (
@@ -26,9 +23,11 @@ export default function Home() {
           height={500}
         />
         <Flex flexDirection={getWindowSize.width < 960 ? "column" : "row"}>
-          <Heading>LEARN</Heading>
-          <Heading>BETTER </Heading>
-          <Heading>TOGETHER</Heading>
+          <HStack>
+            <Heading>LEARN</Heading>
+            <Heading>BETTER </Heading>
+            <Heading>TOGETHER</Heading>
+          </HStack>
         </Flex>
         <Flex
           flexDirection={getWindowSize.width < 960 ? "column" : "row"}

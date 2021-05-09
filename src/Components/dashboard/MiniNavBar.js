@@ -17,6 +17,12 @@ export default function MiniNavBar() {
   const navLoginButtonContext = useContext(NavLoginButtonContext);
   const userDataContext = useContext(UserDataContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [isCreateSectionDialogOpen, setIsCreateSectionDialogOpen] = useState(
+    false
+  );
+  const onCreateSectionDialogClose = () => setIsCreateSectionDialogOpen(false);
+  const onCreateSectionDialogOpen = () => setIsCreateSectionDialogOpen(true);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const onLogoutDialogClose = () => setIsLogoutDialogOpen(false);
   return (
@@ -43,6 +49,7 @@ export default function MiniNavBar() {
             leftIcon={<IoIosCreate color={Colors.green} size={25} />}
             variant="ghost"
             justifyContent="left"
+            onClick={onCreateSectionDialogOpen}
           >
             Create New Section
           </Button>
@@ -70,7 +77,10 @@ export default function MiniNavBar() {
         {navLoginButtonContext.isLoggedIn ? "LOG OUT" : "LOG IN"}
       </Button>
       <CreateAccountFormDialog isOpen={isOpen} onClose={onClose} />
-      {/* <CreateSectionFormDialog isOpen={isOpen} onClose={onClose} /> */}
+      <CreateSectionFormDialog
+        isOpen={isCreateSectionDialogOpen}
+        onClose={onCreateSectionDialogClose}
+      />
       <LogOutDialog isOpen={isLogoutDialogOpen} onClose={onLogoutDialogClose} />
     </Flex>
   );
