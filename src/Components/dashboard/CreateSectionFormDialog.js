@@ -140,6 +140,7 @@ export default function CreateSectionFormDialog(props) {
               placeholder="Select year Level"
               onChange={(val) => {
                 loadSections({ yearLevel: val.target.value });
+                console.log("STUDENT LIST" + studentList);
               }}
             >
               <option value="1">1</option>
@@ -153,17 +154,23 @@ export default function CreateSectionFormDialog(props) {
               placeholder="Select section"
               onChange={(val) => {
                 console.log(val.target.value);
+                setSection(val.target.value);
               }}
               disabled={sectionList.length == 0 ? true : false}
             >
               {sectionList.map((val, index) => {
-                <option value={val.id.sectionName} key={index}>
-                  {val.id.sectionName}
-                </option>;
+                return (
+                  <option value={val.id.sectionName} key={index}>
+                    {val.id.sectionName}
+                  </option>
+                );
               })}
             </Select>
+
             <FormLabel>Student List</FormLabel>
-            <FormHelperText>Select student by checking the box.</FormHelperText>
+            <FormHelperText>
+              Select student by ticking the checkbox.
+            </FormHelperText>
             <CheckboxGroup
               onChange={(val) => {
                 setStudentList(val);
