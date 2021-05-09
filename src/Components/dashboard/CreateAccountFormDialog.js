@@ -42,17 +42,6 @@ export default function CreateAccountFormDialog(props) {
   const toast = useToast();
   // const [accountType, setAccountType] = useState("");
   async function submitAccountForm() {
-    var form = {
-      firstName: firstName,
-      middleInitial: middleInitial,
-      lastName: lastName,
-      suffix: suffix,
-      confirmPassword: confirmPassword,
-      email: email,
-      section: section,
-      yearLevel: yearLevel,
-    };
-    console.log(form);
     if (
       firstName == "" ||
       lastName == "" ||
@@ -62,6 +51,17 @@ export default function CreateAccountFormDialog(props) {
       section == "" ||
       yearLevel == ""
     ) {
+      var form = {
+        firstName: firstName,
+        middleInitial: middleInitial,
+        lastName: lastName,
+        suffix: suffix,
+        password: confirmPassword,
+        email: email,
+        section: section,
+        yearLevel: yearLevel,
+      };
+      console.log(form);
       toast({
         title: "Empty text field found!",
         description: "Please fill out all the required text fields",
@@ -72,7 +72,17 @@ export default function CreateAccountFormDialog(props) {
       });
     } else {
       //Create Account Form
-
+      var form = {
+        firstName: firstName,
+        middleInitial: middleInitial,
+        lastName: lastName,
+        suffix: suffix,
+        password: confirmPassword,
+        email: email,
+        section: section,
+        yearLevel: yearLevel,
+      };
+      console.log(form);
       //POST Request to attempt creating a new account.
       var attemptCreateAccount = await axios
         .post("https://opdbs.vercel.app/api/student", form)
