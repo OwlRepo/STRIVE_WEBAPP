@@ -44,16 +44,16 @@ export default function MiniNavBar() {
           >
             Create New Account
           </Button>
-          <br />
-          {/* <Button
+          {/* <br />
+           <Button
             leftIcon={<IoIosCreate color={Colors.green} size={25} />}
             variant="ghost"
             justifyContent="left"
             onClick={onCreateSectionDialogOpen}
           >
             Create New Section
-          </Button> */}
-          <br />
+          </Button> 
+          <br /> */}
         </>
       )}
       <Button
